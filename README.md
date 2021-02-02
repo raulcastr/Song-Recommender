@@ -1,4 +1,4 @@
-<img src="https://insmac.org/uploads/posts/2019-04/1554470928_drmare.png" width="200"/>
+<img src="https://insmac.org/uploads/posts/2019-04/1554470928_drmare.png" width="150"/>
 
 # Song Recommender 
 
