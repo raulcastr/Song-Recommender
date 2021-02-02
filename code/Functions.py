@@ -1,11 +1,23 @@
 #!/usr/bin/env python
 # coding: utf-8
 
+# In[1]:
+
+
+from bs4 import BeautifulSoup
+import pandas as pd
+import requests
+import spotipy 
+from spotipy.oauth2 import SpotifyClientCredentials
+
+   
+
+
 # In[85]:
 
 
 def read_text(select,attribute=0): #function for reading scraped data
-    from bs4 import BeautifulSoup
+
     text=[]
     
     for tag in select:
@@ -21,9 +33,7 @@ def read_text(select,attribute=0): #function for reading scraped data
 
 
 def create_hot100_df(): #Function to get the latest update of the top100 hot billboard list
-    import pandas as pd
-    import requests
-    from bs4 import BeautifulSoup
+
 
     url = "https://www.billboard.com/charts/hot-100"
     response = requests.get(url)
@@ -50,7 +60,7 @@ def create_hot100_df(): #Function to get the latest update of the top100 hot bil
 
 
 def input_song(df): #Function to read user's input
-    import pandas as pd
+
     
     song=""   
     song=(input("Write down one of your favourite songs : "))
@@ -73,7 +83,7 @@ def input_song(df): #Function to read user's input
 
 
 def random_song(df): #Function to return a random song from the top100 hot songs
-    import pandas as pd
+
     
     new_song=df["Song title"].sample()
     song_artist=df["Artists involved"][df["Song title"]==list(new_song)[0]]
@@ -81,16 +91,15 @@ def random_song(df): #Function to return a random song from the top100 hot songs
     return new_song , song_artist
 
 
-# In[89]:
+# In[1]:
 
 
 def get_playlist_tracks(username,playlist_id): #Function to read a whole playlist from Spotify
-    import spotipy 
-    from spotipy.oauth2 import SpotifyClientCredentials
+
     
     spotify = spotipy.Spotify(client_credentials_manager=SpotifyClientCredentials(
         client_id='82c7549d6f7e4453871ce606e4752b70',
-        client_secret='785b5199900e4ea9a1fa042790cd2ae4'
+        client_secret='0a5a80f3cfb84aa69c7b2f6ffc657e71'
         ))
     
     results = spotify.user_playlist_tracks(username,playlist_id)
@@ -121,7 +130,7 @@ def get_details_tracks(result): #Functions to get the song names, artists and au
     
     spotify = spotipy.Spotify(client_credentials_manager=SpotifyClientCredentials(
         client_id='82c7549d6f7e4453871ce606e4752b70',
-        client_secret='785b5199900e4ea9a1fa042790cd2ae4'
+        client_secret='0a5a80f3cfb84aa69c7b2f6ffc657e71'
         ))
     
     for item in result:
@@ -150,6 +159,15 @@ def get_details_tracks(result): #Functions to get the song names, artists and au
         
     
     return song_details , artist_uri
+
+
+# In[ ]:
+
+
+def get_album_ids_from_artist(artist_id):
+    results= sp.artist_albums(artist_id, limit = 50)
+    tracks.extend(results['items'])
+    
 
 
 # In[91]:
@@ -213,7 +231,7 @@ def run(original_df_top,original_df_spotify):
     
     spotify = spotipy.Spotify(client_credentials_manager=SpotifyClientCredentials(
         client_id='82c7549d6f7e4453871ce606e4752b70',
-        client_secret='785b5199900e4ea9a1fa042790cd2ae4'
+        client_secret='0a5a80f3cfb84aa69c7b2f6ffc657e71'
         ))
     
     df=original_df_top.copy()
@@ -256,8 +274,8 @@ def run(original_df_top,original_df_spotify):
                 
     if user_input[0]==False:
         
-        kmeans = pickle.load(open("kmeans", "rb"))
-        scaler = pickle.load(open("scaler", "rb"))
+        kmeans = pickle.load(open("../data/kmeans", "rb"))
+        scaler = pickle.load(open("../data/scaler", "rb"))
         
         artist=(input("Write down the name of the artist interpeting your previous song choice : "))
         
